@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="contractDataMapper">
+    <insert id="insertContractData" parameterType="ru.alfastrah.interplat.bus.opentext.card.beans.ContractData">
+         insert into contract_data (
+             contract_number,
+             contract_option_value)
+         values (
+             #{contractNumber},
+             #{contractOptionValue})
+    </insert>
+</mapper>

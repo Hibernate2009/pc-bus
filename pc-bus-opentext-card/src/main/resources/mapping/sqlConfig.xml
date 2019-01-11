@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeHandlers>
+        <typeHandler javaType="org.joda.time.DateTime" 
+                     handler="ru.alfastrah.interplat.bus.opentext.card.typehandlers.DateTimeTypeHandler" />
+
+        <typeHandler javaType="org.joda.time.LocalDateTime"
+                     handler="ru.alfastrah.interplat.bus.opentext.card.typehandlers.LocalDateTimeTypeHandler" />
+
+        <typeHandler javaType="org.joda.time.LocalDate"
+                     handler="ru.alfastrah.interplat.bus.opentext.card.typehandlers.LocalDateTypeHandler" />
+
+    </typeHandlers>
+ 
+    <mappers>
+        <mapper resource="/mapping/interplatMapper.xml" />
+        <!--<mapper resource="/mapping/unicusMapper.xml" />-->
+    </mappers>
+	
+</configuration>

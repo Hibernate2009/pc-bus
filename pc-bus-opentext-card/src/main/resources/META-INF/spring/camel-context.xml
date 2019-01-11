@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:osgix="http://www.springframework.org/schema/osgi-compendium"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:jaxrs-client="http://cxf.apache.org/jaxrs-client"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+        http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+       http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/jaxrs-client http://cxf.apache.org/schemas/jaxrs-client.xsd">
+
+
+    <ctx:annotation-config/>
+    <ctx:component-scan base-package="ru.alfastrah.interplat.bus"/>
+
+    <camel:camelContext id="pc-bus-opentext-card-context" useMDCLogging="true">
+        <camel:propertyPlaceholder id="propertyContext" location="ref:interplat4props"/>
+        <camel:package>ru.alfastrah.interplat.bus</camel:package>
+    </camel:camelContext>
+
+    <ctx:property-placeholder properties-ref="interplat4props"/>
+
+    <osgix:cm-properties id="interplat4props" persistent-id="ru.alfastrah.interplat4">
+        <prop key="mail-comp.host">default</prop>
+        <prop key="mail-comp.port">25</prop>
+        <prop key="mail-comp.username">default</prop>
+        <prop key="mail-comp.password">default</prop>
+        <prop key="mail-comp.sender">interplat4</prop>
+
+        <prop key="unicus.host">bator.vesta.ru</prop>
+        <prop key="unicus.port">7775</prop>
+        <prop key="unicus.app">uncunc</prop>
+
+        <prop key="db.unicus.host">no-default</prop>
+        <prop key="db.unicus.port">no-default</prop>
+        <prop key="db.unicus.db">no-default</prop>
+        <prop key="db.unicus.username">interplat</prop>
+        <prop key="db.unicus.password">XXX</prop>
+        <prop key="db.unicus.pool.maxsize">10</prop>
+        <prop key="db.unicus.pool.max.idle.connection">5</prop>
+        <prop key="db.unicus.pool.wait.connect">1000</prop>
+        <prop key="db.unicus.pool.checkout.time">6000000</prop>
+        <prop key="db.unicus.intdocId">no-default</prop>
+
+        <prop key="interplat.host">no-default</prop>
+        <prop key="interplat.port">no-default</prop>
+        <prop key="interplat.db">no-default</prop>
+        <prop key="interplat.username">no-default</prop>
+        <prop key="interplat.password">XXX</prop>
+
+        <prop key="rest.service.url">no-default</prop>
+    </osgix:cm-properties>
+
+    <jaxws:client id="usrService" serviceClass="unicus.tops.UsrPort"
+                  address="http://${unicus.host}:${unicus.port}/${unicus.app}/usrService">
+        <jaxws:features>
+            <bean class="org.apache.cxf.feature.LoggingFeature"/>
+        </jaxws:features>
+        <jaxws:properties>
+            <entry key="loggingFeatureEnabled" value="true"/>
+        </jaxws:properties>
+    </jaxws:client>
+
+    <jaxws:client id="dictionaryService" serviceClass="unicus.tops.DictionaryPort"
+                  address="http://${unicus.host}:${unicus.port}/${unicus.app}/dictionaryService">
+        <jaxws:features>
+            <bean class="org.apache.cxf.feature.LoggingFeature"/>
+        </jaxws:features>
+        <jaxws:properties>
+            <entry key="loggingFeatureEnabled" value="true"/>
+        </jaxws:properties>
+    </jaxws:client>
+
+    <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+        <property name="userName" value="admin"/>
+        <property name="password" value="admin"/>
+    </bean>
+
+    <bean id="dataSourceInterplat" class="net.sourceforge.jtds.jdbcx.JtdsDataSource">
+        <property name="user" value="${interplat.username}"/>
+        <property name="password" value="${interplat.password}"/>
+        <property name="serverName" value="${interplat.host}"/>
+        <property name="portNumber" value="${interplat.port}"/>
+        <property name="databaseName" value="${interplat.db}"/>
+    </bean>
+
+    <bean id="dataSourceUnicus" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@${db.unicus.host}:${db.unicus.port}:${db.unicus.db}"/>
+        <property name="username" value="${db.unicus.username}"/>
+        <property name="password" value="${db.unicus.password}"/>
+        <property name="poolMaximumActiveConnections" value="${db.unicus.pool.maxsize}"/>
+        <property name="poolMaximumIdleConnections" value="${db.unicus.pool.max.idle.connection}"/>
+        <property name="poolTimeToWait" value="${db.unicus.pool.wait.connect}"/>
+        <property name="poolMaximumCheckoutTime" value="${db.unicus.pool.checkout.time}"/>
+    </bean>
+
+    <bean id="sqlSessionFactoryInterplat" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceInterplat"/>
+        <property name="configLocation" value="/mapping/sqlConfig.xml"/>
+    </bean>
+
+    <bean id="sqlSessionFactoryUnicus" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceUnicus"/>
+        <property name="configLocation" value="/mapping/sqlConfig.xml"/>
+    </bean>
+
+    <bean id="myBatisInterplat" class="org.apache.camel.component.mybatis.MyBatisComponent">
+        <property name="sqlSessionFactory" ref="sqlSessionFactoryInterplat"/>
+    </bean>
+
+    <bean id="myBatisUnicus" class="org.apache.camel.component.mybatis.MyBatisComponent">
+        <property name="sqlSessionFactory" ref="sqlSessionFactoryUnicus"/>
+    </bean>
+
+    <bean id="myBatisInterplatChecker" class="ru.alfastrah.interplat.bus.health.databasechecker.DefaultDataBaseChecker">
+        <constructor-arg ref="myBatisInterplat"/>
+    </bean>
+
+    <bean id="healthCheckService" class="ru.alfastrah.interplat.bus.health.rest.HealthCheckServiceImpl">
+        <property name="checkersMap">
+            <map key-type="java.lang.String" value-type="ru.alfastrah.interplat.bus.health.Checker">
+                <entry key="Unicus" value-ref="myBatisInterplatChecker"/>
+            </map>
+        </property>
+    </bean>
+
+    <jaxrs:server id="restService" address="/pc-bus-opentext-card">
+        <jaxrs:serviceBeans>
+            <ref bean="healthCheckService"/>
+        </jaxrs:serviceBeans>
+    </jaxrs:server>
+
+    <jaxrs-client:client id="restClient" address="${rest.service.url}"
+                         serviceClass="ru.alfastrah.interplat.bus.opentext.card.rest.RestClient">
+        <jaxrs-client:headers>
+            <entry key="Charset" value="UTF-8"/>
+            <entry key="Accept" value="application/json"/>
+        </jaxrs-client:headers>
+        <jaxrs-client:providers>
+            <bean id="jsonDataProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider"/>
+        </jaxrs-client:providers>
+    </jaxrs-client:client>
+</beans>

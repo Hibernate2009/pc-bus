@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxws:bindings wsdlLocation="26_27_28-ADService.wsdl"
+                xmlns:jaxws="http://java.sun.com/xml/ns/jaxws" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+                xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.0"
+                xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <jaxws:bindings schemaLocation="26_27_28-ADService.wsdl"
+                    node="wsdl:definitions/wsdl:types/xs:schema[@targetNamespace='urn:otintegration.service.livelink.opentext.com/Imports']">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.opentext.livelink.service.otintegration"/>
+        </jaxb:schemaBindings>
+    </jaxws:bindings>
+</jaxws:bindings>

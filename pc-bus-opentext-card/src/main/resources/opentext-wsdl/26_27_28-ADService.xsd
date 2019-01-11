@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="urn:otintegration.service.livelink.opentext.com"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:otintegration.service.livelink.opentext.com">
+    <xs:element name="DigitalSignatureHandling">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="parameter" type="tns:DSignRequestType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="DSignRequestType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="attachment" nillable="true"
+                                type="tns:FUIBAttachmentType"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="rkId" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="startWorkflow" nillable="true" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ServiceDataObject" abstract="true"/>
+    <xs:complexType name="DSignResponseType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="attachment" nillable="true"
+                                type="tns:FUIBAttachmentType"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="errorCode" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="errorMessage" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="idRK" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="status" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="workFlowID" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="FUIBAttachmentType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="documentID" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="documentIndex" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="documentName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="documentType" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="filePath" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="DigitalSignatureHandlingResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="DigitalSignatureHandlingResult"
+                            type="tns:DSignResponseType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Ping">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="parameter" type="tns:PingType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="PingType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="ping" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="PingResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="PingResult" type="tns:PingResponseType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="PingResponseType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:CardResponseType">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="ping" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CardResponseType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="id" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="idRK" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="UpdateAD">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="parameter" type="tns:CardADType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="CardADType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:CardType">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idAD" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idOriginalAD" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idVersionAD" type="xs:long"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CardType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="agent" type="tns:AgentType"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="channelSale" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="comment" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="conditionKV" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="contractDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="contractNumber" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="curator" type="tns:CuratorType"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="executiveEmail" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="filial" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="idBarcode" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idRK" nillable="true" type="xs:long"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="mediatorType" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="status" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="supervisingUnit" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="taxTreatment" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="urlDocument" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="AgentType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="0" maxOccurs="1" name="activityType" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="agentId" nillable="true" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="agentName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="birthDate" nillable="true" type="xs:dateTime"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="brokerLicenseDate" nillable="true"
+                                type="xs:dateTime"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="brokerLicenseNumber" nillable="true"
+                                type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="inn" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="ogrnip" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="patronymic" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="status" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="surname" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CuratorType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="department" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="headDepartment" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="name" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="patronymic" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="surname" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CardDSType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:CardType">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="dateDS" type="xs:dateTime"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="extraDocClassification" nillable="true"
+                                type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idDS" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idOriginalDS" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idVersionDS" type="xs:long"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="numberDS" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="typeOfStandardDS" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="UpdateADResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="UpdateADResult" type="tns:CardResponseType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="UpdateDS">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="parameter" type="tns:CardDSType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="UpdateDSResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="UpdateDSResult" type="tns:CardResponseType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="UpdateReportAct">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="parameter" type="tns:CardReportActType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="CardReportActType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="actDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="actNumber" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="agent" type="tns:AgentType"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="agentPayKV" nillable="true" type="xs:double"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="agentWithheldKV" nillable="true" type="xs:double"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="channelSale" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="contractDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="contractNumber" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="DocumentKind" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="executiveEmail" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="executiveReportAct" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="filial" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idAct" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idAD" type="xs:long"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idBarcode" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="idRK" nillable="true" type="xs:long"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="mediatorType" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="PaymentOrderKV" nillable="true"
+                                type="tns:PaymentOrderKVType"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="status" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="supervisingUnit" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="taxTreatment" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" maxOccurs="1" name="urlDocument" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="PaymentOrderKVType">
+        <xs:complexContent mixed="false">
+            <xs:extension base="tns:ServiceDataObject">
+                <xs:sequence>
+                    <xs:element minOccurs="1" maxOccurs="1" name="datePaymentOrderKV" nillable="true"
+                                type="xs:dateTime"/>
+                    <xs:element minOccurs="1" maxOccurs="1" name="numberPaymentOrderKV" nillable="true"
+                                type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="UpdateReportActResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="1" name="UpdateReportActResult" type="tns:CardResponseType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
